@@ -1,0 +1,125 @@
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.poetry]
+name = "order-flow-professional"
+version = "1.0.0"
+description = "Institutional-grade market analysis platform for professional traders"
+authors = ["Trading Terminal Team <team@orderflowpro.com>"]
+license = "MIT"
+readme = "README.md"
+packages = [{include = "backend"}]
+
+[tool.poetry.dependencies]
+python = "^3.9"
+flask = "^2.3.3"
+flask-cors = "^4.0.0"
+python-dotenv = "^1.0.0"
+requests = "^2.31.0"
+python-socketio = "^5.9.0"
+python-engineio = "^4.7.1"
+pandas = "^2.0.3"
+numpy = "^1.24.3"
+scipy = "^1.11.2"
+ta = "^0.10.2"
+sqlalchemy = "^2.0.20"
+psycopg2-binary = "^2.9.7"
+redis = "^5.0.0"
+alembic = "^1.12.0"
+polygon-io = "^1.13.0"
+alpaca-trade-api = "^3.2.1"
+yfinance = "^0.2.32"
+ccxt = "^3.0.2"
+aiohttp = "^3.8.5"
+aiofiles = "^23.2.1"
+uvicorn = "^0.23.2"
+gunicorn = "^21.2.0"
+pydantic = "^2.0.3"
+marshmallow = "^3.20.1"
+python-dateutil = "^2.8.2"
+click = "^8.1.7"
+tabulate = "^0.9.0"
+colorama = "^0.4.6"
+tqdm = "^4.66.1"
+cryptography = "^41.0.4"
+pyjwt = "^2.8.0"
+python-json-logger = "^2.0.7"
+sentry-sdk = "^1.32.0"
+websockets = "^11.0"
+
+[tool.poetry.group.dev.dependencies]
+pytest = "^7.4.0"
+pytest-asyncio = "^0.21.1"
+pytest-cov = "^4.1.0"
+pytest-mock = "^3.11.1"
+black = "^23.9.1"
+flake8 = "^6.0.0"
+pylint = "^2.17.5"
+mypy = "^1.5.1"
+isort = "^5.12.0"
+pre-commit = "^3.3.3"
+
+[tool.poetry.scripts]
+order-flow = "backend.main:main"
+
+[tool.vercel]
+entrypoint = "backend/main.py"
+
+[tool.black]
+line-length = 100
+target-version = ['py39', 'py310', 'py311']
+include = '\.pyi?$'
+exclude = '''
+/(
+    \.git
+  | \.hg
+  | \.mypy_cache
+  | \.tox
+  | \.venv
+  | _build
+  | buck-out
+  | build
+  | dist
+)/
+'''
+
+[tool.isort]
+profile = "black"
+line_length = 100
+skip_glob = ["*/migrations/*"]
+known_first_party = ["backend"]
+
+[tool.mypy]
+python_version = "3.9"
+warn_return_any = true
+warn_unused_configs = true
+disallow_untyped_defs = false
+ignore_missing_imports = true
+plugins = ["pydantic.mypy"]
+
+[tool.pytest.ini_options]
+minversion = "7.0"
+addopts = "-ra -q --strict-markers --cov=backend --cov-report=term-by-term --cov-report=html"
+testpaths = ["tests"]
+python_files = "test_*.py"
+python_classes = "Test*"
+python_functions = "test_*"
+
+[tool.coverage.run]
+source = ["backend"]
+omit = [
+    "*/tests/*",
+    "*/migrations/*",
+    "*/__init__.py",
+]
+
+[tool.coverage.report]
+exclude_lines = [
+    "pragma: no cover",
+    "def __repr__",
+    "raise AssertionError",
+    "raise NotImplementedError",
+    "if __name__ == .__main__.:",
+    "if TYPE_CHECKING:",
+]
