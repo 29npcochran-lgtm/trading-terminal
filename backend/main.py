@@ -58,6 +58,18 @@ def create_app():
             'environment': os.getenv('FLASK_ENV', 'production')
         }), 200
     
+    @app.route('/', methods=['GET'])
+    def index():
+        return jsonify({
+            'message': 'Order Flow Professional API',
+            'version': '1.0.0',
+            'endpoints': {
+                'health': '/health',
+                'version': '/api/version',
+                'docs': '/api/docs'
+            }
+        }), 200
+    
     # Error handlers
     @app.errorhandler(404)
     def not_found(error):
@@ -74,8 +86,10 @@ def create_app():
     
     return app
 
+# Create app instance for Vercel
+app = create_app()
+
 if __name__ == '__main__':
-    app = create_app()
     port = int(os.getenv('PORT', 5000))
     debug = os.getenv('FLASK_ENV') == 'development'
     
